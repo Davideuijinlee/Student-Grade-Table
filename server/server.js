@@ -42,8 +42,38 @@ server.get('/api/grades', (req, res)=> {
     })
 })
 
-server.post('/api/grades', (req, res)=>{
+// INSERT INTO `grades` SET `surname`=`Dan`, `givenname`= "Paschal", course`="math", `grade`=80
+//INSERT INTO `grades` (`surname`, `givenname`, `course`, `grade`) VALUES ("Paschal", "Dan", "math", 80)
+//^ advantage you can put multiple values at the same time
 
+
+server.post('/api/grades', (req, res)=>{
+    //check the body object and see if any data was not sent
+    if(req.body.name === undefined || req.body.course ===undefined || req.body.grade===undefined){
+        //respond to the client with an appropriate error message
+        res.send({
+            success: false,
+            error: 'invalid name, course, or grade'
+        })
+        return;
+    }
+    //connect to database
+    db.connect(()=>{
+
+        const name = req.body.name.split(" ");
+        //conatenating a string for use in mysql and gluing it together in a query
+        const query = 'INSERT INTO `grades` SET `surname`="'+name.slice(1).join(' ')+'", `givenname`="'+name[0]+'", `course` = "'+req.body.course+'", `grade` = '+req.body.grade+', `added`=NOW()';
+        
+        db.query(query, (error, result)=>{
+            if(!error){
+                res.send({
+                    success: true,
+                    new_id: result.insertId
+                })
+            }
+        })
+        console.log(query);
+    })
 })
 
 server.listen(3001, ()=>{
