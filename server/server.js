@@ -1,7 +1,7 @@
-const express = require('express'); //load the express library into the file
-const server = express(); //calling function to run server
-server.use(express.static(__dirname + '/html'));
-//middleware -> runs in between 2 points. otherwise known as the middle
+const express = require('express'); 
+const server = express(); 
+server.use(express.static(__dirname + '/SGT'));
+
 
 var insults = [
     'you smell... bad', 
@@ -14,12 +14,7 @@ var insults = [
 server.get('/', function(request, response){
     response.send('Carrier has Arrived');
 })
-//two arguments that this takes
-//1. path/url to listen for
-//2. callback function to call once that path has been received
-//function is going to receive 2 things.
-//1. object reprsenting all of the data coming from the client to the server (req)
-//2. an object representing all of the data going from the server to the client (res)
+
 server.get('/time', (request, response)=>{
     var now = new Date();
     response.send( now.toLocaleDateString() )
