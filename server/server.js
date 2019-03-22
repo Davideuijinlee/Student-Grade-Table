@@ -1,6 +1,6 @@
 const express = require('express'); 
 const server = express(); 
-server.use(express.static(__dirname + '/SGT'));
+server.use(express.static(__dirname + '/html'));
 
 
 var insults = [
