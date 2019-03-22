@@ -2,30 +2,27 @@ const express = require('express');
 const server = express(); 
 server.use(express.static(__dirname + '/html'));
 
-
-var insults = [
-    'you smell... bad', 
-    'your mom',
-    'no you',
-    'i know you are but what am I'
-]
-
-
-server.get('/', function(request, response){
-    response.send('Carrier has Arrived');
+server.get('/api/grades', (req, res)=> {
+    res.send(`{
+        "success": true,
+        "data": [{
+            "id": 10,
+            "name": "David Lee",
+            "course": "underwater weaving",
+            "grade": 80
+        }, {
+            "id": 11,
+            "name": "John Wee",
+            "course": "high intensity rapping",
+            "grade": 70
+        }, {
+            "id": 12,
+            "name": "Javid Lwee",
+            "course": "yarn tossing",
+            "grade": 83
+        }]
+    }`)
 })
-
-server.get('/time', (request, response)=>{
-    var now = new Date();
-    response.send( now.toLocaleDateString() )
-})
-
-server.get('/insult', (request, response)=>{
-    var randomInsult = insults[Math.floor(Math.random()*insults.length)]
-    response.send(randomInsult);
-})
-
-
 
 server.listen(3001, ()=>{
     console.log('Battlecruiser Operational');
