@@ -63,7 +63,7 @@ server.post('/api/grades', (req, res)=>{
         const name = req.body.name.split(" ");
         //conatenating a string for use in mysql and gluing it together in a query
         const query = 'INSERT INTO `grades` SET `surname`="'+name.slice(1).join(' ')+'", `givenname`="'+name[0]+'", `course` = "'+req.body.course+'", `grade` = '+req.body.grade+', `added`=NOW()';
-        
+
         db.query(query, (error, result)=>{
             if(!error){
                 res.send({
@@ -76,7 +76,32 @@ server.post('/api/grades', (req, res)=>{
     })
 })
 
+server.delete('/api/grades', (req, res)=>{
+    if(req.query.student_id=== undefined){
+        res.send({
+            success: false,
+            error: 'must provide a student id for delete'
+        });
+        return;
+    }
+    db.connect(()=>{
+    const query = 'DELETE FROM `grades` WHERE `id` = '+req.query.student_id+'';
+        db.query(query, (error, result)=>{
+            if(!error){
+                res.send({
+                    success: true,
+                })
+            }else{
+                res.send({
+                    success: false,
+                })
+            }
+        })
+    })
+})
+
+
 server.listen(3001, ()=>{
     console.log('Battlecruiser Operational');
 })
-//where am i setting up shop and what am i going to call when i'm set up
+//where am i setting up shop and what am i going to call when i'm set 
